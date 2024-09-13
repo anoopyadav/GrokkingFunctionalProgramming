@@ -31,7 +31,9 @@ object ch07 extends App {
         def value: Int = a
     }
 
-    case class Artist(name: String, genre: Genre, origin: Location, yearsActiveStart: Year, yearsActiveEnd: Option[Year])
+    case class PeriodInYears(start: Year, end: Option[Year])
+
+    case class Artist(name: String, genre: Genre, origin: Location, yearsActive: PeriodInYears)
   }
   {
     import model.*
@@ -43,7 +45,7 @@ object ch07 extends App {
       if filter.isEmpty then artists else artists.filter(artist => filter.contains(artist.origin.name))
 
     def filterByYears(artists: List[Artist], yearsStart: Int, yearsEnd: Int): List[Artist] =
-      artists.filter(artist => artist.yearsActiveStart.value <= yearsEnd && artist.yearsActiveEnd.forall(_.value >= yearsStart))
+      artists.filter(artist => artist.yearsActive.start.value <= yearsEnd && artist.yearsActive.end.forall(_.value >= yearsStart))
 
     def searchArtists(
                        artists: List[Artist],
@@ -56,9 +58,9 @@ object ch07 extends App {
       if searchByActiveYears then filterByYears(byLocation, activeAfter, activeBefore) else byLocation
 
     // Data
-    val metallica = Artist("Metallica", Genre("Heavy Metal"), Location("U.S."), Year(1981), None)
-    val ledZeppelin = Artist("Led Zeppelin", Genre("Hard Rock"), Location("England"), Year(1968), Some(Year(1980)))
-    val beeGees = Artist("Bee Gees", Genre("Pop"), Location("England"), Year(1958), Some(Year(2003)))
+    val metallica = Artist("Metallica", Genre("Heavy Metal"), Location("U.S."), PeriodInYears(Year(1981), None))
+    val ledZeppelin = Artist("Led Zeppelin", Genre("Hard Rock"), Location("England"), PeriodInYears(Year(1968), Some(Year(1980))))
+    val beeGees = Artist("Bee Gees", Genre("Pop"), Location("England"), PeriodInYears(Year(1958), Some(Year(2003))))
     val artists = List(metallica, ledZeppelin, beeGees)
 
     // Tests
