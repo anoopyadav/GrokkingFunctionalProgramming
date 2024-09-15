@@ -101,4 +101,63 @@ object ch07 extends App {
     assert(usersFansOfLongNames(users) == List(eve, trent))
     assert(usersFansOfSomeM(users) == List(mal))
   }
+
+  // Use ADTs
+  private object modelV2 {
+    enum Genre {
+      case HeavyMetal
+      case Pop
+      case HardRock
+    }
+
+    opaque type Location = String
+
+    object Location {
+      def apply(value: String): Location = value
+
+      extension (x: Location)
+        def value: String = x
+    }
+
+    enum Period {
+      case activeBetween(start: Int, end: Int)
+
+      case activeSince(start: Int)
+    }
+
+    case class Artist(name: String, genre: Genre, origin: Location, period: Period)
+  }
+  {
+    import modelV2.*
+
+    val metallica = Artist("Metallica", Genre.HeavyMetal, Location("U.S."), Period.activeSince(1981))
+    val ledZeppelin = Artist("Led Zeppelin", Genre.HardRock, Location("England"), Period.activeBetween(1968, 1980))
+    val beeGees = Artist("Bee Gees", Genre.Pop, Location("England"), Period.activeBetween(1958, 2003))
+    val artists = List(metallica, ledZeppelin, beeGees)
+
+    def wasArtistActive(period: Period, activeAfter: Int, activeBefore: Int): Boolean =
+      period match {
+        case Period.activeSince(start) => start <= activeBefore
+        case Period.activeBetween(start, end) => start <= activeBefore && end >= activeAfter
+      }
+
+    def searchArtists(
+                       artists: List[Artist],
+                       genres: List[Genre],
+                       locations: List[String],
+                       searchByActiveYears: Boolean,
+                       activeAfter: Int,
+                       activeBefore: Int
+                     ) = {
+      artists.filter(artist => genres.isEmpty || genres.contains(artist.genre))
+        .filter(artist => locations.isEmpty || locations.contains(artist.origin.value))
+        .filter(artist => !searchByActiveYears || wasArtistActive(artist.period, activeAfter, activeBefore))
+    }
+
+    assert(searchArtists(artists, List(Genre.Pop), List("England"), true, 1950, 2022) == List(beeGees))
+    assert(searchArtists(artists, List.empty, List("England"), true, 1950, 2022) == List(ledZeppelin, beeGees))
+    assert(searchArtists(artists, List.empty, List.empty, true, 1981, 2003) == List(metallica, beeGees))
+    assert(searchArtists(artists, List.empty, List("U.S."), false, 0, 0) == List(metallica))
+    assert(searchArtists(artists, List.empty, List.empty, false, 2019, 2022) == List(metallica, ledZeppelin, beeGees))
+  }
 }
