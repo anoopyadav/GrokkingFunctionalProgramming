@@ -159,5 +159,15 @@ object ch07 extends App {
     assert(searchArtists(artists, List.empty, List.empty, true, 1981, 2003) == List(metallica, beeGees))
     assert(searchArtists(artists, List.empty, List("U.S."), false, 0, 0) == List(metallica))
     assert(searchArtists(artists, List.empty, List.empty, false, 2019, 2022) == List(metallica, ledZeppelin, beeGees))
+
+    def activeLength(artist: Artist, currentYear: Int): Int =
+      artist.period match {
+        case Period.activeBetween(start, end) => end - start
+        case Period.activeSince(start) => currentYear - start
+      }
+
+    assert(activeLength(metallica, 2024) == 43)
+    assert(activeLength(ledZeppelin, 2024) == 12)
+    assert(activeLength(beeGees, 2024) == 45)
   }
 }
