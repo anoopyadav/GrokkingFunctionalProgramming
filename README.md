@@ -13,7 +13,7 @@ Functional programming is imperative
 
 Naming scheme - use a noun instead of verb to help brain switch to declarative mode
 
-> [!tip]
+> [!Tip]
 > ##### Pure function
 >1. Always returns a single value
 >2. Calculates return value based solely on arguments
@@ -23,7 +23,7 @@ Naming scheme - use a noun instead of verb to help brain switch to declarative m
 
 Calling a function multiple times with the same argument(s) yields the same result.
 
-> [!tip]
+> [!Tip]
 > ##### Immutable values
 > FP relies on immutable values or state to minimize the amount of moving parts.
 
@@ -32,7 +32,7 @@ Calling a function multiple times with the same argument(s) yields the same resu
 Focus on what needs to be done, not how it'done.
 Define relations between the incoming values and values we need to create.
 
-> [!tip]
+> [!Tip]
 > Using _is_ in requirements is important so we can easily encode them as immutable values.
 > example - Page 89
 
@@ -41,7 +41,7 @@ Define relations between the incoming values and values we need to create.
 > [!Quote]
 > Functional programming is using _pure_ functions to manipulate _immutable_ values.
 
-> [!Info]
+> [!Note]
 > Functions stored as values are at the core of FP
 
 #### Function building-blocks
@@ -57,10 +57,6 @@ Define relations between the incoming values and values we need to create.
 ##### filter
 
 `List[A].filter(f: A => Boolean): List[A]`
-
-#### Functions as values
-
-![[functions_as_values.png]]
 
 #### Currying
 
@@ -90,7 +86,8 @@ Chapter 5-10
 - In this case, `collection1.flatMap()` is the outermost loop
 - `collection3.map()` is the innermost loop
 
-> [!example] For comprehension
+> [!Note]
+> For comprehension
 >```scala
 >for {
 >	val1 <- collection1
@@ -100,7 +97,8 @@ Chapter 5-10
 >```
 
 This is equivalent to
-> [!example] Nested flatMap
+> [!Note]
+> Nested flatMap
 >```scala
 >collection1.flatMap(val1 => 
 >	collection2.flatMap(val2 => 
@@ -111,7 +109,7 @@ This is equivalent to
 >)
 >```
 
-> [!important]
+> [!Important]
 > The last enumerator in a for-expression is translated into a `map()`, while all the preceding ones are `flatMap()`
 
 > [!Important]
@@ -135,13 +133,10 @@ This is equivalent to
 2. `if` statement as a boolean expression
 3. function that returns a list
 
-#### Error handling
-
-![[error_handling_scala.png]]
-
 ##### Use for-expression to handle failures
 
-> [!Tip] For-expression to handle exceptions
+> [!Tip]
+> For-expression to handle exceptions
 >```scala
 >for {
 >	result1 <- expr1
@@ -166,7 +161,8 @@ This is equivalent to
 >
 >`Either` uses `toSeq()` to filter out `Left()` values.
 
-> [!important] Example
+> [!Important]
+> Example
 >```scala
 >val test: List[Either[String, Int]] = List(Left("error"), Right(2), Right(3), Left("error"))
 >>val test: List[Either[String, Int]] = List(Left(error), Right(2), Right(3), Left(error))
@@ -194,12 +190,12 @@ A requirement can be one of two types:
 
 ##### More higher-order functions
 
-> [!Info]
+> [!Note]
 > `forall` return `true` if all elements satisfy the condition.
 > For `Option` types with `None` as value, it short-circuits.
 
 
-> [!Info]
+> [!Note]
 > `exists` return `true` if atleast one of the elements satisfy the condition.
 > For `Option` type with `None` as value, it returns `false`
 
@@ -214,7 +210,7 @@ A requirement can be one of two types:
 2. Product type - used to model all possible combinations of params (cartesian product)
 
 _Sum_ types are modelled using `enum`
-> [!tip]
+> [!Tip]
 >```scala
 >enum colors {
 >	case RED
@@ -231,7 +227,7 @@ _ADTs_ simply combine Sum type with Product type
 >}
 
 The multiple cases for ADTs are processed using pattern matching
-> [!tip]
+> [!Tip]
 >```scala
 >def parsePeriod(period: Period) {
 >	period match {
@@ -244,7 +240,7 @@ The multiple cases for ADTs are processed using pattern matching
 
 - Allows defining custom types on top of primitive types
 
-> [!Info]
+> [!Note]
 >```scala
 >// Define type
 >opaque type Location = String
